@@ -1,0 +1,33 @@
+import socket
+import sys
+
+# Get the target (IP address or hostname) and ports to scan
+target = input("Enter the IP address or hostname of the target: ")
+start_port = int(input("Enter the start port: "))
+end_port = int(input("Enter the end port: "))
+
+# Print what we are scanning
+print(f"Scanning {target} from port {start_port} to {end_port}...")
+
+# Function to scan a port
+def scan_port(target, port):
+    try:
+        # Create a socket object
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # Set a timeout
+        sock.settimeout(1)  
+        # Try to connect to the port
+        result = sock.connect_ex((target, port))
+        # Check if the port is open
+        if result == 0:
+            print(f"Port {port} is open")
+        else:
+            print(f"Port {port} is closed")
+        # Close the socket
+        sock.close()
+    except Exception as e:
+        print(f"Error scanning port {port}: {e}")
+
+# Scan the ports in the specified range
+for port in range(start_port, end_port + 1):
+    scan_port(target, port)
